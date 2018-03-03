@@ -1,0 +1,21 @@
+﻿@model List<BookCatalog.Models.Review>
+@{
+    ViewBag.Title = "PersonReviews";
+}
+
+<br/>
+@foreach (var review in Model)
+{
+    <div>
+        <p>Rate: @review.Rate</p>
+        <p>@review.Description</p>
+        <p>By @review.Author.FirstName + " " + @review.Author.LastName</p>
+        <p>@review.Date</p>
+        <hr />
+    </div>
+}
+<br/>
+<p>@Html.ActionLink("To main page", "Index")</p>
+
+
+

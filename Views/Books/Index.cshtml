@@ -1,0 +1,121 @@
+﻿@model List<BookCatalog.Models.Book>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "Index";
+}
+<img src="~/Content/books.jpg" alt="books" style="width:100%"/>
+<h2>Books</h2>
+
+<p style="font-family:Cambria"></p>
+<p style="font-family:serif"></p>
+<div class="row">
+
+    <div class="col-sm-6">
+        @Html.ActionLink("Add book", "CreateBook")
+        <br />
+
+        <label for="sort">Sort by: </label>
+        <select class="form-control" id="sort" style="margin-left:30px">
+            <option value="title_asc">Title ascending</option>
+            <option value="title_desc">Title descending</option>
+            <option value="rate_desc">Rate descending</option>
+            <option value="rate_asc">Rate ascending</option>
+        </select>
+        <br />
+        <input class="form-control" type="text" placeholder="Search" id="search" style="margin-left:30px" />
+        
+        <br />
+        <ul id="books" class="list-group list-group-flush">
+            @foreach (var book in Model)
+        {
+            <li class="list-group-item">
+                <span>
+                    "@Html.DisplayFor(model => book.Title)", by @Html.DisplayFor(model => book.Author.FirstName) @Html.DisplayFor(model => book.Author.LastName)
+                    Rate: @Html.DisplayFor(model => book.AvgRate)
+                </span>
+                @Html.ActionLink("Reviews", "Reviews", "Reviews", new { bookId = book.Id }, null)
+
+                <button id="btn" type="button" class="btn btn-xs">+</button>
+
+                <ul class="list-group list-group-flush hidden" style="margin-top:10px">
+                    <li class="list-group-item">
+                        <p>@book.Annotation</p>
+                    </li>
+                </ul>
+            </li>
+
+    }
+        </ul>
+    </div>
+    <div class="col-sm-6"></div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function putDataToPage(data) {
+        $('#books').empty();
+        $.each(data, function () {
+            var book = this;
+
+            var bookInfo = book.Title + ", by " + book.Author.FirstName + " "
+                + book.Author.LastName + " " + ' Rate: ' + book.AvgRate + ' ';
+
+            var bookInfoElem = $('<span>').append(bookInfo);
+
+            var reviewsLink = $('<a>')
+                .attr('href', '/Books/Reviews/' + book.Id)
+                .text('Reviews');
+
+            var annotBtn = $('<button>').text('+')
+                .addClass('btn btn-xs')
+                .attr('id', 'btn')
+                .attr('type', 'button');
+
+            var annotation = $('<ul>').addClass('list-group list-group-flush hidden')
+                .append($('<li>').addClass('list-group-item')
+                .text(book.Annotation));
+
+            var newElem = $('<li class="list-group-item">').append(bookInfoElem)
+                .append(reviewsLink).append(' ')
+                .append(annotBtn)
+                .append(annotation);
+
+            $('#books').append(newElem);
+        });
+
+        $('button').click(function () {
+            $(this).next().toggleClass('hidden');
+        });
+    };
+
+    $('#search').keyup(function () {
+        var word = $(this).val();
+        $.getJSON('/books/searchbooks/', { searchword: word })
+            .done(function (data) { putDataToPage(data); });      
+    });
+
+    $('button').click(function () {
+        $(this).next().toggleClass('hidden');
+    });
+
+    $('#sort').change(function () {
+        var order = $(this).val();
+        $.getJSON("/books/sortedbooks", { sortparam: order })
+            .done(function (data) {
+                putDataToPage(data);
+            });
+    });
+</script>
+
+
+
+
+
+
+
+

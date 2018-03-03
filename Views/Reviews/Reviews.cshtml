@@ -1,0 +1,52 @@
+﻿@model BookCatalog.Models.Book
+@{
+    ViewBag.Title = "Reviews";
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <h3>@Model.Title</h3>
+        <br />
+        <ul>
+            <li>Author: @Model.Author.FirstName @Model.Author.LastName</li>
+            <li>Average rate: @Model.AvgRate</li>
+            <li>Genre: @Model.Genre</li>
+        </ul>
+        <br />
+        <p>@Model.Annotation</p>
+        <br />
+        @Html.ActionLink("Create new review", "CreateReview", new { bookId = Model.Id })
+        <br />
+
+        <h4>Reviews:</h4>
+
+        @{
+        if (Model.Reviews.Count == 0)
+        {
+            <br />
+            <p>No reviews for this book, you can create the first one.</p>
+    }
+        }
+        <ul class="list-group list-group-flush">
+
+            @foreach (var review in Model.Reviews)
+        {
+            <li class="list-group-item">
+                <h5>Rate: @review.Rate</h5>
+                <p>@review.Description</p>
+                <h5>By @review.Author.FirstName @review.Author.LastName</h5>
+                <p style="text-align:right">@review.Date</p>
+            </li>
+    }
+        </ul>
+
+        <br />
+        <p>@Html.ActionLink("To main page", "Index", "Books")</p>
+    </div>
+    <div class="col-sm-6">
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title – ASP.NET application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        @@font-face {
+	font-family: 'MetaSerifPro-Black';
+	src: url('/fonts/MetaSerifPro-Black.otf') format("truetype"); 
+    }
+        @@font-face {
+            font-family: 'MetaSerifPro-BlackIta';
+            src: url('/fonts/MetaSerifPro-BlackIta.otf') format("truetype");
+        }
+        @@font-face {
+            font-family: 'MetaSerifPro-Book';
+            src: url('/fonts/MetaSerifPro-Book.otf') format("truetype");
+        }
+        @@font-face {
+            font-family: 'MetaSerifPro-BookIta';
+            src: url('/fonts/MetaSerifPro-BookIta.otf') format("truetype");
+        }
+
+    </style>
+
+</head>
+<body style="font-size:16px;">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:powderblue; color:black; border:none">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Book catalog", "Index", "Books", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Books")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+       
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year – ASP.NET application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
